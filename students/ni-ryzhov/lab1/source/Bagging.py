@@ -53,10 +53,6 @@ train_time = time.time() - start_time
 y_pred = bagging.predict(X_test)
 acc = accuracy_score(y_test, y_pred)
 
-print("Custom Bagging:")
-print(f"Время обучения: {train_time:.4f} сек")
-print(f"Точность на тесте: {acc:.4f}")
-
 kf = KFold(n_splits=5, shuffle=True, random_state=42)
 cv_scores = []
 
@@ -69,8 +65,6 @@ for train_idx, val_idx in kf.split(X):
     y_pred_val = model.predict(X_val)
     score = accuracy_score(y_val, y_pred_val)
     cv_scores.append(score)
-
-print(f"Средняя точность по кросс-валидации: {np.mean(cv_scores):.4f}")
 
 from sklearn.ensemble import BaggingClassifier
 
@@ -85,7 +79,14 @@ sk_acc = accuracy_score(y_test, sk_y_pred)
 from sklearn.model_selection import cross_val_score
 sk_cv_scores = cross_val_score(sk_bagging, X, y, cv=5)
 
-print("\nSklearn BaggingClassifier:")
+print("\nКастомная реализация")
+print(f"Время обучения: {train_time:.4f} сек")
+print(f"Точность: {acc:.4f}")
+print(f"Средняя точность по кросс-валидации: {np.mean(cv_scores):.4f}")
+
+print("\nРеализация scikit-learn")
 print(f"Время обучения: {sk_train_time:.4f} сек")
-print(f"Точность на тесте: {sk_acc:.4f}")
+print(f"Точность: {sk_acc:.4f}")
 print(f"Средняя точность по кросс-валидации: {np.mean(sk_cv_scores):.4f}")
+
+

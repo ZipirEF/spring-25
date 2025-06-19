@@ -83,14 +83,14 @@ def cross_val_evaluation(model, X, y, cv=5, title=""):
 
     return avg_acc, avg_time
 
-print("Custom realization")
+print("Кастомная реализация")
 custom_nb = CustomNaiveBayes()
 custom_acc, custom_time = cross_val_evaluation(custom_nb, X, y, cv=5, title="Custom Naive Bayes")
 
-print("\nScikit-learn realization")
+print("\nРеализация scikit-learn")
 sklearn_nb = GaussianNB()
 sklearn_acc, sklearn_time = cross_val_evaluation(sklearn_nb, X, y, cv=5, title="Sklearn Naive Bayes")
 
-print("\nComparison")
+print("\nСравнение")
 print(f"Custom NB - Accuracy: {custom_acc:.4f}, Time: {custom_time:.6f}")
 print(f"Sklearn NB - Accuracy: {sklearn_acc:.4f}, Time: {sklearn_time:.6f}")
