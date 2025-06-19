@@ -6,15 +6,12 @@ from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import GradientBoostingRegressor
 import time
 
-# Загрузка данных
 data = fetch_california_housing()
 X = data.data
 y = data.target
 
-# Деление на обучающую и тестовую выборки
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Кастомная реализация
 class CustomGradientBoostingRegressor:
     def __init__(self, n_estimators=100, learning_rate=0.1, max_depth=3):
         self.n_estimators = n_estimators
@@ -41,17 +38,14 @@ class CustomGradientBoostingRegressor:
             y_pred += self.learning_rate * tree.predict(X)
         return y_pred
 
-# Обучение кастомной модели
 start_time = time.time()
 custom_model = CustomGradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3)
 custom_model.fit(X_train, y_train)
 custom_train_time = time.time() - start_time
 
-# Предсказание и оценка на тесте
 y_pred_custom = custom_model.predict(X_test)
 custom_mse = mean_squared_error(y_test, y_pred_custom)
 
-# Кросс-валидация кастомной модели
 kf = KFold(n_splits=5, shuffle=True, random_state=42)
 custom_cv_mse = []
 custom_cv_times = []
@@ -73,21 +67,17 @@ for train_idx, val_idx in kf.split(X):
 custom_cv_mse_mean = np.mean(custom_cv_mse)
 custom_cv_time_mean = np.mean(custom_cv_times)
 
-# Обучение модели sklearn
 start_time = time.time()
 sklearn_model = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3)
 sklearn_model.fit(X_train, y_train)
 sklearn_train_time = time.time() - start_time
 
-# Предсказание и оценка на тесте
 y_pred_sklearn = sklearn_model.predict(X_test)
 sklearn_mse = mean_squared_error(y_test, y_pred_sklearn)
 
-# Кросс-валидация sklearn модели
 sk_cv_scores = cross_val_score(sklearn_model, X, y, scoring='neg_mean_squared_error', cv=5)
 sk_cv_mse_mean = -np.mean(sk_cv_scores)
 
-# Вывод
 print("\nКастомная реализация")
 print(f"MSE на тестовой выборке: {custom_mse:.4f}")
 print(f"Средняя MSE по кросс-валидации: {custom_cv_mse_mean:.4f}")
